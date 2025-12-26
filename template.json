@@ -1,0 +1,56 @@
+{
+  "Actor": {
+    "types": ["character", "ship"],
+    "character": {
+      "attributes": {
+        "st": { "value": 0, "label": "Strength" },
+        "dx": { "value": 0, "label": "Dexterity" },
+        "iq": { "value": 0, "label": "Intelligence" },
+        "ca": { "value": 0, "label": "Charisma" }
+      },
+      "details": {
+        "race": { "value": "", "label": "Race" },
+        "class": { "value": "", "label": "Class" },
+        "rank": { "value": "", "label": "Rank" },
+        "xp": { "value": 0 } 
+      },
+      "fate": { "value": 1, "max": 3 },
+      "wounds": { "value": 0, "label": "Wounds Taken" },
+      "armor": { "value": 0, "label": "Armor Bonus" }
+    },
+    "ship": {
+      "stats": {
+        "wr": { "value": 0, "label": "Weapon Rating" },
+        "sr": { "value": 0, "label": "Base Shield Rating" },
+        "warp": { "value": 0, "label": "Warp Speed" },
+        "impulse": { "value": 0, "label": "Impulse" }
+      },
+      "shields": { "value": 100, "max": 100, "label": "Shield %" },
+      "details": {
+        "notes": { "value": "" }
+      }
+    }
+  },
+  "Item": {
+    "types": ["item", "skill", "weapon", "talent", "equipment"],
+    "skill": {
+      "rank": 0,
+      "attribute": "iq"
+    },
+    "weapon": {
+      "weaponTN": 5, 
+      "attackAttribute": "dx",
+      "attackSkillName": "Marksmanship",
+      "notes": ""
+    },
+    "talent": {
+      "notes": ""
+    },
+    "equipment": {
+      "notes": ""
+    },
+    "item": {
+      "description": { "value": "" }
+    }
+  }
+}

@@ -1,0 +1,154 @@
+<form class="{{cssClass}} ftrpg" autocomplete="off">
+
+    <header class="sheet-header">
+        <img class="profile-img {{borderClass}}" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+        
+        <div class="header-fields">
+            
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+            </h1>
+
+            <div class="grid-4col">
+                <div class="resource">
+                    <label>CLASS</label>
+                    <input type="text" name="system.details.class.value" value="{{system.details.class.value}}"/>
+                </div>
+                <div class="resource">
+                    <label>RACE</label>
+                    <input type="text" name="system.details.race.value" value="{{system.details.race.value}}"/>
+                </div>
+                <div class="resource">
+                    <label>RANK</label>
+                    <input type="text" name="system.details.rank.value" value="{{system.details.rank.value}}"/>
+                </div>
+                <div class="resource">
+                    <label>XP</label>
+                    <input type="number" name="system.details.xp.value" value="{{system.details.xp.value}}"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="main">ATTRIBUTES</a>
+        <a class="item" data-tab="items">INVENTORY & SKILLS</a>
+    </nav>
+
+    <section class="sheet-body">
+        
+        <div class="tab main" data-group="primary" data-tab="main">
+            
+            <div class="attributes-grid">
+                {{#each system.attributes as |attr key|}}
+                <div class="attribute">
+                    <label class="rollable" data-key="{{key}}" data-label="{{attr.label}}">{{attr.label}}</label>
+                    <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}"/>
+                </div>
+                {{/each}}
+            </div>
+
+            <div class="resources">
+                <div class="resource">
+                    <label>Fate Points</label>
+                    <input type="number" name="system.resources.fate.value" value="{{system.resources.fate.value}}"/>
+                </div>
+                <div class="resource">
+                    <label>Armor Bonus</label>
+                    <input type="number" name="system.armor.value" value="{{system.armor.value}}"/>
+                </div>
+            </div>
+
+            <div class="wound-system">
+                <h2>STATUS</h2>
+                <button class="roll-init" title="Roll 3d6 + DEX">COMBAT INITIATIVE</button>
+                <div style="text-align:center; margin-top:10px;">
+                    <label>WOUNDS<br>TAKEN</label>
+                    <input type="number" name="system.wounds.value" value="{{system.wounds.value}}"/>
+                </div>
+                <div style="text-align:center; color:#888; font-size:10px; margin-top:5px;">
+                    (Each Wound adds +3 to Consciousness TN)
+                </div>
+                <button class="roll-survival">I WAS HIT! (ROLL CONSCIOUSNESS)</button>
+            </div>
+            
+            <div style="margin-top:15px;">
+                <h3 style="font-family:'Final Frontier',sans-serif; border-bottom:1px solid #000;">LOGS / NOTES</h3>
+                {{editor system.biography target="system.biography" button=true owner=owner editable=editable}}
+            </div>
+        </div>
+
+        <div class="tab items" data-group="primary" data-tab="items">
+            
+            <div class="item-section">
+                <div class="item-header">WEAPONS</div>
+                <ol class="item-list">
+                    {{#each weapons as |item id|}}
+                    <li class="item flexrow" data-item-id="{{item._id}}">
+                        <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
+                        
+                        {{#if item.showStunToggle}}
+                            <button class="phaser-mode {{item.phaserMode}}">{{item.phaserMode}}</button>
+                        {{/if}}
+
+                        <h4 class="item-name item-roll" style="flex:2; cursor:pointer;">{{item.name}}</h4>
+                        <div class="item-controls">
+                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ol>
+            </div>
+
+            <div class="item-section">
+                <div class="item-header">SKILLS</div>
+                <ol class="item-list">
+                    {{#each skills as |item id|}}
+                    <li class="item flexrow" data-item-id="{{item._id}}">
+                        <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
+                        <h4 class="item-name item-roll" style="flex:2; cursor:pointer;">{{item.name}} (Rank {{item.system.rank}})</h4>
+                        <div class="item-controls">
+                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ol>
+            </div>
+
+            <div class="item-section">
+                <div class="item-header">TALENTS</div>
+                <ol class="item-list">
+                    {{#each talents as |item id|}}
+                    <li class="item flexrow" data-item-id="{{item._id}}">
+                        <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
+                        <h4 class="item-name" style="flex:2;">{{item.name}}</h4>
+                        <div class="item-controls">
+                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ol>
+            </div>
+
+            <div class="item-section">
+                <div class="item-header">EQUIPMENT</div>
+                <ol class="item-list">
+                    {{#each equipment as |item id|}}
+                    <li class="item flexrow" data-item-id="{{item._id}}">
+                        <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
+                        <h4 class="item-name" style="flex:2;">{{item.name}}</h4>
+                        <div class="item-controls">
+                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ol>
+            </div>
+
+        </div>
+    </section>
+</form>
