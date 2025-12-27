@@ -1,0 +1,66 @@
+{
+  "name": "ftrpg",
+  "title": "Far Trek RPG",
+  "description": "A lightweight system for Far Trek. V13 Ready.",
+  "version": "1.2.0",
+  "id": "ftrpg",
+  "manifest": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/system.json",
+  "download": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/system.zip",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    { "name": "Some Old Pirate", "flags": {} }
+  ],
+  "esmodules": ["ftrpg.js"],
+  "styles": ["ftrpg.css"],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "ship": {}
+    },
+    "Item": {
+      "item": {},
+      "skill": {},
+      "weapon": {},
+      "talent": {},
+      "equipment": {}
+    }
+  },
+  "grid": {
+    "distance": 5,
+    "units": "ft",
+    "type": 1
+  },
+  "packs": [
+    {
+      "name": "skills",
+      "label": "Skills",
+      "system": "ftrpg",
+      "path": "packs/skills",
+      "type": "Item"
+    },
+    {
+      "name": "talents",
+      "label": "Talents",
+      "system": "ftrpg",
+      "path": "packs/talents",
+      "type": "Item"
+    },
+    {
+      "name": "weapons",
+      "label": "Weapons",
+      "system": "ftrpg",
+      "path": "packs/weapons",
+      "type": "Item"
+    },
+    {
+      "name": "equipment",
+      "label": "Equipment",
+      "system": "ftrpg",
+      "path": "packs/equipment",
+      "type": "Item"
+    }
+  ]
+}
