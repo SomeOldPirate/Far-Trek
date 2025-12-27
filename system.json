@@ -5,7 +5,7 @@
   "version": "1.2.0",
   "id": "ftrpg",
   "manifest": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/system.json",
-  "download": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/system.zip",
+  "download": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/ftrpg.zip",
   "compatibility": {
     "minimum": "12",
     "verified": "13"
