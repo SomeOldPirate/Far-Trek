@@ -14,8 +14,8 @@
   "esmodules": ["ftrpg.js"],
   "styles": ["ftrpg.css"],
 
-"manifest": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/system.json",
-"download": "https://github.com/SomeOldPirate/ftrpg/releases/latest/download/ftrpg.zip",
+"manifest": "https://github.com/SomeOldPirate/Far-Trek/releases/latest/download/system.json",
+"download": "https://github.com/SomeOldPirate/Far-Trek/releases/latest/download/ftrpg.zip",
   
   "documentTypes": {
     "Actor": {
