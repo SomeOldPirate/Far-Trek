@@ -1,0 +1,70 @@
+<form class="{{cssClass}} ftrpg npc-sheet" autocomplete="off">
+    
+    <header class="npc-header">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+        <div class="header-details">
+            <input class="npc-name" name="name" type="text" value="{{actor.name}}" placeholder="NPC Name"/>
+            <input class="npc-rank" type="text" name="system.details.class.value" value="{{system.details.class.value}}" placeholder="Rank / Type"/>
+        </div>
+    </header>
+
+    <div class="sheet-body">
+        
+        <div class="wounds-container">
+            <label>WOUNDS</label>
+            <input type="number" name="system.wounds.value" value="{{system.wounds.value}}"/>
+        </div>
+
+        <div class="npc-attributes">
+            {{#each system.attributes as |attr key|}}
+            <div class="npc-attr-box">
+                <label class="rollable" data-label="{{key}}" data-key="{{key}}">{{key}}</label>
+                <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}"/>
+            </div>
+            {{/each}}
+        </div>
+
+        <button class="roll-init npc-init-btn">ROLL INITIATIVE</button>
+
+        <div class="npc-section">
+            <h3>WEAPONS</h3>
+            <div class="npc-list">
+                {{#each weapons as |item id|}}
+                <div class="npc-item weapon" data-item-id="{{item._id}}">
+                    <div class="npc-item-name">
+                        <span class="name">{{item.name}}</span>
+                        <span class="stats">{{item.system.damage}} | TN {{item.system.weaponTN}}</span>
+                    </div>
+                    <div class="npc-item-controls">
+                        <a class="item-roll" title="Attack"><i class="fas fa-crosshairs"></i></a>
+                        <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="npc-section">
+            <h3>GEAR & ABILITIES</h3>
+            <div class="npc-list">
+                {{#each skills as |item id|}}
+                <div class="npc-item skill" data-item-id="{{item._id}}">
+                    <span class="name">{{item.name}} ({{item.system.rank}})</span>
+                    <a class="item-roll"><i class="fas fa-dice"></i></a>
+                </div>
+                {{/each}}
+                {{#each talents as |item id|}}
+                <div class="npc-item talent" data-item-id="{{item._id}}">
+                    <span class="name">{{item.name}}</span>
+                    <a class="item-edit"><i class="fas fa-info-circle"></i></a>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="npc-footer">
+            <a class="item-create" data-type="weapon"><i class="fas fa-plus"></i> Add Weapon/Skill</a>
+        </div>
+
+    </div>
+</form>

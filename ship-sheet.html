@@ -1,0 +1,144 @@
+<form class="{{cssClass}} ftrpg ship-sheet" autocomplete="off">
+    
+    <header class="sheet-header">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="U.S.S. Enterprise" style="font-family: 'Final Frontier', 'Arial', sans-serif;"/>
+            </h1>
+            
+            <div class="resources" style="display: flex; gap: 15px; align-items: flex-end; margin-top: 5px;">
+                <div class="resource-group" style="flex: 0 0 80px;">
+                    <label style="font-size: 0.8em; font-weight: bold; display: block; margin-bottom: 2px;">SCALE</label>
+                    <input type="number" name="system.stats.scale" value="{{system.stats.scale}}" placeholder="1-10" style="font-family: Arial; height: 30px; text-align: center; width: 100%; box-sizing: border-box;"/>
+                </div>
+
+                <div class="resource-group" style="flex: 0 0 140px;">
+                    <label style="font-size: 0.8em; font-weight: bold; display: block; margin-bottom: 2px;">POWER</label>
+                    <div class="resource-inputs" style="display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid #7a7971; border-radius: 3px; height: 30px; padding: 0 5px;">
+                        <input type="number" name="system.health.power.value" value="{{system.health.power.value}}" style="font-family: Arial; height: 100%; text-align: right; width: 50%; border: none; background: transparent; color: #fff;"/>
+                        <span style="color: #aaa; padding: 0 5px;">/</span>
+                        <input type="number" name="system.health.power.max" value="{{system.health.power.max}}" style="font-family: Arial; height: 100%; text-align: left; width: 50%; border: none; background: transparent; color: #fff;"/>
+                    </div>
+                </div>
+
+                <div class="resource-group" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end;">
+                    <label style="font-size: 0.8em; font-weight: bold; display: block; margin-bottom: 2px;">SHIELDS</label>
+                    <a class="toggle-shields" style="display: flex; align-items: center; justify-content: center; height: 30px; background: rgba(0,0,0,0.5); border: 1px solid #555; border-radius: 3px; color: {{#if system.health.shields.active}}#6cf{{else}}#555{{/if}}; text-decoration: none; font-size: 0.9em;">
+                        <i class="fas fa-power-off" style="margin-right: 5px;"></i> 
+                        {{#if system.health.shields.active}}ENGAGED{{else}}OFFLINE{{/if}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="sheet-body" style="padding: 10px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px;">
+        
+        <div class="console-panel">
+            <div class="console-header header-gold">SHIP SYSTEMS</div>
+            <div class="console-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="data-block">
+                    <label>TACTICAL</label>
+                    <input type="number" name="system.stats.tactical" value="{{system.stats.tactical}}" class="big-stat"/>
+                </div>
+                <div class="data-block">
+                    <label>ENGINEERING</label>
+                    <input type="number" name="system.stats.engineering" value="{{system.stats.engineering}}" class="big-stat"/>
+                </div>
+                <div class="data-block">
+                    <label>HELM / NAV</label>
+                    <input type="number" name="system.stats.helm" value="{{system.stats.helm}}" class="big-stat"/>
+                </div>
+                <div class="data-block">
+                    <label>SENSORS</label>
+                    <input type="number" name="system.stats.sensors" value="{{system.stats.sensors}}" class="big-stat"/>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; border-top: 2px solid #555; padding-top: 10px;">
+                <label style="color:#eebb00; font-family:'Final Frontier', sans-serif;">CARGO / NOTES</label>
+                <textarea name="system.stats.notes" rows="6" style="background:#111; color:#fff; width:100%; border:none; padding:5px;">{{system.stats.notes}}</textarea>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <button class="bridge-report" style="background: #222; color: #eebb00; border: 1px solid #eebb00; width: 100%;">
+                    <i class="fas fa-comment-dots"></i> REQUEST BRIDGE REPORT
+                </button>
+            </div>
+        </div>
+
+        <div class="console-panel tactical-border">
+            <div class="console-header header-red">TACTICAL DISPLAY</div>
+            
+            <button class="roll-incoming-hit dialog-button" style="background: #a00 !important; color: #fff !important; margin-bottom: 15px; border: 1px solid #f66;">
+                <i class="fas fa-meteor"></i> "I'VE BEEN HIT!"
+            </button>
+
+            <div class="shield-monitor" style="margin-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                    <label class="monitor-label">DEFLECTOR SHIELDS</label>
+                    <a class="roll-damage-control" data-type="shields" style="font-size:0.7em; color:#6cf; cursor:pointer;">
+                        <i class="fas fa-sync"></i> REGEN
+                    </a>
+                </div>
+                
+                <div class="shield-bar-container">
+                    <div class="shield-bar-fill" style="width: {{shieldPct}}%; background-color: #6cf;"></div>
+                    <div class="shield-grid"></div>
+                </div>
+                
+                <div class="shield-readout" style="display:flex; justify-content:space-between; margin-top:5px; font-family:'Courier New', monospace;">
+                    <div style="color: #6cf;">INTEGRITY: {{system.health.shields.value}} / {{system.health.shields.max}}</div>
+                    <div style="color: #fff;">EFFECTIVE SR: <b style="font-size:1.2em; color:#eebb00;">{{effectiveSR}}</b></div>
+                </div>
+            </div>
+
+            <div class="shield-monitor" style="margin-bottom: 15px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                    <label class="monitor-label" style="color:#f66;">HULL STRUCTURE</label>
+                    <a class="roll-damage-control" data-type="structure" style="font-size:0.7em; color:#f66; cursor:pointer;">
+                        <i class="fas fa-wrench"></i> JURY RIG
+                    </a>
+                </div>
+                
+                <div class="shield-bar-container" style="border-color:#500;">
+                    <div class="shield-bar-fill" style="width: {{hullPct}}%; background-color: #a33;"></div>
+                    <div class="shield-grid"></div>
+                </div>
+                <div style="text-align:right; margin-top:5px; color:#f66; font-family:'Courier New', monospace;">
+                   {{system.health.structure.value}} / {{system.health.structure.max}}
+                </div>
+            </div>
+            
+            <div style="background:rgba(0,0,0,0.5); padding:5px; border:1px solid #444; margin-bottom:15px;">
+                <label style="font-size:0.8em; color:#aaa; display:block; text-align:center; margin-bottom:5px;">SYSTEM STATUS (CLICK TO TOGGLE)</label>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; font-size:0.9em;">
+                    {{#each system.subsystems as |status key|}}
+                    <div class="system-status-toggle" data-system="{{key}}" style="cursor:pointer; padding:2px; border:1px solid #333; text-align:center; background:#111;">
+                        <span style="color:#fff;">{{key}}</span>: 
+                        <span style="font-weight:bold; color:{{lookup ../statusColors status}};">{{lookup ../statusLabels status}}</span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                 <button class="roll-system-damage" style="background: #300; color: #f66; border: 1px solid #500; font-size: 0.8em;">
+                    <i class="fas fa-cogs"></i> SYSTEM DAMAGE
+                 </button>
+                 <button class="roll-casualties" style="background: #300; color: #f66; border: 1px solid #500; font-size: 0.8em;">
+                    <i class="fas fa-user-injured"></i> CASUALTIES
+                 </button>
+            </div>
+
+            <div class="tactical-controls">
+                <hr style="border-color:#440000; margin: 15px 0;">
+                <button class="roll-ship-attack dialog-button" style="background: #eebb00 !important; color: #000 !important; font-weight:bold;">
+                    <i class="fas fa-crosshairs"></i> FIRE WEAPONS
+                </button>
+            </div>
+        </div>
+
+    </div>
+</form>

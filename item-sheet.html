@@ -1,0 +1,87 @@
+<form class="{{cssClass}} ftrpg item-sheet" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Item Name"/></h1>
+        </div>
+    </header>
+
+    <div class="sheet-body">
+        
+        {{!-- WEAPON FIELDS --}}
+        {{#if (eq item.type "weapon")}}
+        <div class="form-group">
+            <label>Damage</label>
+            <input type="text" name="system.damage" value="{{system.damage}}" placeholder="1d6"/>
+        </div>
+        <div class="form-group">
+            <label>Range</label>
+            <input type="text" name="system.range" value="{{system.range}}" placeholder="Close, Ranged"/>
+        </div>
+        <div class="form-group">
+            <label>Attack Attribute</label>
+            <select name="system.attackAttribute">
+                {{selectOptions config.attributes selected=system.attackAttribute localize=false}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Target Number (TN)</label>
+            <input type="number" name="system.weaponTN" value="{{system.weaponTN}}"/>
+        </div>
+        <div class="form-group">
+            <label>Has Stun Setting?</label>
+            <input type="checkbox" name="system.hasStun" {{checked system.hasStun}}/>
+        </div>
+        {{/if}}
+
+        {{!-- SKILL FIELDS --}}
+        {{#if (eq item.type "skill")}}
+        <div class="form-group">
+            <label>Rank</label>
+            <input type="number" name="system.rank" value="{{system.rank}}"/>
+        </div>
+        <div class="form-group">
+            <label>Attribute</label>
+            <select name="system.attribute">
+                {{selectOptions config.attributes selected=system.attribute localize=false}}
+            </select>
+        </div>
+        {{/if}}
+
+        {{!-- TALENT FIELDS (NEW CONFIGURATION) --}}
+        {{#if (eq item.type "talent")}}
+        <div style="background: rgba(0,0,0,0.1); padding: 5px; margin-bottom: 10px; border: 1px solid #777;">
+            <label style="font-weight:bold; display:block; margin-bottom:5px;">AUTOMATION SETTINGS</label>
+            
+            <div class="form-group">
+                <label>Modifier Type</label>
+                <select name="system.modType">
+                    {{selectOptions config.modTypes selected=system.modType localize=false}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Target</label>
+                <input type="text" name="system.modTarget" value="{{system.modTarget}}" placeholder="ranged, melee, skillname, all"/>
+                <p style="font-size:0.8em; color:#666; margin:0;">Use "ranged" or "melee" for attacks. Use Skill Name for skills.</p>
+            </div>
+
+            <div class="form-group">
+                <label>Bonus Value</label>
+                <input type="number" name="system.modValue" value="{{system.modValue}}"/>
+            </div>
+            
+            <div class="form-group">
+                <label>Is Active?</label>
+                <input type="checkbox" name="system.isActive" {{checked system.isActive}}/>
+            </div>
+        </div>
+        {{/if}}
+
+        {{!-- COMMON FIELDS --}}
+        <div class="form-group">
+            <label>Notes / Description</label>
+            <textarea name="system.notes" rows="8">{{system.notes}}</textarea>
+        </div>
+    </div>
+</form>
