@@ -49,12 +49,43 @@ export function html(initial = "") {
 }
 
 /**
+ * Recursively coerce NumberField slots holding blank/non-numeric legacy
+ * values (e.g. "" from an old, unvalidated text-like input, or a value
+ * left over from a since-removed field) to that field's own initial value,
+ * so a single bad stray value can't hard-fail schema validation and make
+ * the whole actor "unavailable" on load. Runs in migrateData, before
+ * validation.
+ * @param {foundry.data.fields.SchemaField} schemaField
+ * @param {object} data
+ */
+function sanitizeNumberFields(schemaField, data) {
+  if (!data || typeof data !== "object") return;
+  for (const [key, field] of Object.entries(schemaField.fields)) {
+    if (field instanceof foundry.data.fields.SchemaField) {
+      sanitizeNumberFields(field, data[key]);
+    } else if (field instanceof foundry.data.fields.NumberField) {
+      if (!(key in data)) continue;
+      const value = data[key];
+      if (typeof value === "number" && Number.isFinite(value)) continue;
+      const coerced = Number(value);
+      data[key] = Number.isFinite(coerced) ? coerced : (field.initial ?? 0);
+    }
+  }
+}
+
+/**
  * Common base for all Far Trek RPG type data models.
  * @abstract
  * @extends {foundry.abstract.TypeDataModel}
  */
 export class FTRPGTypeDataModel extends foundry.abstract.TypeDataModel {
   static LOCALIZATION_PREFIXES = ["FTRPG.Shared"];
+
+  /** @inheritdoc */
+  static migrateData(source) {
+    sanitizeNumberFields(this.schema, source);
+    return super.migrateData(source);
+  }
 }
 
 export { fields };

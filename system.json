@@ -2,7 +2,7 @@
   "id": "ftrpg",
   "title": "Far Trek RPG",
   "description": "A lightweight system for Far Trek. Built for Foundry V14.",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14.367"
