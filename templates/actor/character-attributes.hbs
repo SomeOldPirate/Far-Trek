@@ -1,0 +1,48 @@
+<div class="tab {{tab.cssClass}}" data-tab="attributes" data-group="primary" data-application-part="attributes">
+
+    <div class="attributes-grid">
+        {{#each attributes as |attr key|}}
+        <div class="attribute">
+            <label class="rollable" data-action="rollAttribute" data-key="{{key}}" data-label="{{lookup ../config.attributes key}}">{{lookup ../config.attributes key}}</label>
+            <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}"/>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="resources-row">
+        <div class="resource-panel fate-panel">
+            <div class="resource-header">Fate Points</div>
+            <div class="fate-controls">
+                <button type="button" data-action="fateSpend" title="Spend a Fate Point">&minus;</button>
+                <input type="number" name="system.fate.value" value="{{system.fate.value}}" class="fate-value"/>
+                <button type="button" data-action="fateRefresh" title="Refresh Fate to its starting value">&#8635;</button>
+            </div>
+            <div class="resource-hint">Spend to reroll &middot; Recover for heroic acts</div>
+        </div>
+        <div class="resource-panel armor-panel">
+            <div class="resource-header">Armor Bonus</div>
+            <input type="number" name="system.armor.value" value="{{system.armor.value}}" class="armor-value"/>
+            <div class="resource-hint">Added to Consciousness rolls</div>
+        </div>
+    </div>
+
+    <div class="wound-system">
+        <h2>STATUS</h2>
+        <button type="button" data-action="rollInit" title="Roll 3d6 + DEX">COMBAT INITIATIVE</button>
+        <div style="text-align:center; margin-top:10px;">
+            <label>WOUNDS<br>TAKEN</label>
+            <input type="number" name="system.wounds.value" value="{{system.wounds.value}}"/>
+        </div>
+        <div class="tn-display">Current Consciousness TN: <strong>{{consciousnessTN}}</strong></div>
+        <div style="text-align:center; color:#888; font-size:10px; margin-top:5px;">
+            (Each Wound adds +3 to Consciousness TN)
+        </div>
+        <button type="button" data-action="rollSurvival">I WAS HIT! (ROLL CONSCIOUSNESS)</button>
+    </div>
+
+    <div style="margin-top:15px;">
+        <h3 style="font-family:'Final Frontier',sans-serif; border-bottom:1px solid #000;">LOGS / NOTES</h3>
+        {{formInput fields.biography value=system.biography enriched=enrichedBiography toggled=true editable=editable name="system.biography"}}
+    </div>
+
+</div>

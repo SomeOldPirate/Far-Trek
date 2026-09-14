@@ -1,0 +1,16 @@
+{
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC",
+      "ship": "Starship"
+    },
+    "Item": {
+      "item": "Item",
+      "skill": "Skill",
+      "weapon": "Weapon",
+      "talent": "Talent",
+      "equipment": "Equipment"
+    }
+  }
+}

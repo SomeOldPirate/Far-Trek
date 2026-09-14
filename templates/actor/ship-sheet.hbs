@@ -1,0 +1,208 @@
+<div class="sheet-body" style="background:#111; padding:10px; color:#ccc; height:100%; display:flex; flex-direction:column; gap:8px; overflow-y:auto; box-sizing:border-box;">
+
+    <!-- Ship name -->
+    <div style="border-bottom:2px solid #eebb00; padding-bottom:5px;">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="USS Enterprise"
+            style="background:transparent; border:none; color:#eebb00; font-family:'Final Frontier',sans-serif; font-size:28px; width:100%;"/>
+    </div>
+
+    <!-- Viewscreen -->
+    <div style="position:relative; width:100%; height:150px; background:#000; border:2px solid #333; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; flex:0 0 auto;">
+        <div style="position:absolute; top:0; left:0; right:0; bottom:0; background-image:url('{{actor.img}}'); background-size:cover; background-position:center; filter:blur(15px) brightness(0.3); z-index:0;"></div>
+        <img src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" style="position:relative; z-index:1; max-width:100%; max-height:100%; object-fit:contain; border:none; filter:drop-shadow(0 0 10px rgba(0,0,0,0.8)); cursor:pointer;"/>
+    </div>
+
+    <!-- 3-column bridge layout -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; flex:1;">
+
+        <!-- ═══ COL 1: COMMAND + HELM + SYSTEM STATUS ═══ -->
+        <div style="display:flex; flex-direction:column; gap:8px;">
+
+            <div class="station-panel" style="border:1px solid #888; background:#1a1a1a; padding:5px; border-radius:5px;">
+                <div style="background:#666; color:#fff; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Command</div>
+                <div class="station-drop-zone" data-role="command" style="border:1px dashed #444; padding:4px; text-align:center; min-height:32px; display:flex; align-items:center; justify-content:center;">
+                    {{#if crewData.command}}
+                    <div style="display:flex; align-items:center; gap:6px; width:100%; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+                        <img src="{{crewData.command.img}}" style="width:24px; height:24px; border-radius:3px; border:1px solid #666;"/>
+                        <span style="font-weight:bold; color:#fff; font-size:0.9em; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{crewData.command.name}}</span>
+                        <a data-action="crewRemove" data-role="command" style="color:#666; cursor:pointer; padding:0 3px;">&times;</a>
+                    </div>
+                    {{else}}
+                    <span style="font-size:0.65em; color:#444;">[ DRAG CAPTAIN HERE ]</span>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="station-panel" style="border:1px solid #eebb00; background:#221100; padding:5px; border-radius:5px;">
+                <div style="background:#eebb00; color:#000; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Helm &mdash; Phasers &amp; Maneuver</div>
+                <div class="station-drop-zone" data-role="helm" style="border:1px dashed #554400; padding:4px; margin-bottom:4px; text-align:center; min-height:32px; display:flex; align-items:center; justify-content:center;">
+                    {{#if crewData.helm}}
+                    <div style="display:flex; align-items:center; gap:6px; width:100%; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+                        <img src="{{crewData.helm.img}}" style="width:24px; height:24px; border-radius:3px; border:1px solid #777;"/>
+                        <span style="font-weight:bold; color:#fff; font-size:0.9em; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{crewData.helm.name}}</span>
+                        <a data-action="crewRemove" data-role="helm" style="color:#888; cursor:pointer; padding:0 3px;">&times;</a>
+                    </div>
+                    {{else}}
+                    <span style="font-size:0.65em; color:#554400;">[ DRAG HELMSMAN HERE ]</span>
+                    {{/if}}
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-bottom:4px;">
+                    <button type="button" data-action="rollShipFire" data-weapon-type="phasers" style="background:#cc6600; color:#fff; border:none; font-size:0.75em; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">FIRE PHASERS</button>
+                    <button type="button" data-action="rollHelmManeuver" style="background:#eebb00; color:#000; border:none; font-size:0.75em; padding:5px; border-radius:4px; cursor:pointer; font-weight:bold; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">MANEUVER</button>
+                </div>
+                <div style="display:flex; gap:4px;">
+                    <div class="stat-box">
+                        <label>WR (PHSR)</label>
+                        <input type="number" name="system.stats.tactical" value="{{system.stats.tactical}}"/>
+                    </div>
+                    <div class="stat-box">
+                        <label>BASE SR</label>
+                        <input type="number" name="system.stats.sr" value="{{system.stats.sr}}" title="Ship Shield Rating"/>
+                    </div>
+                    <div class="stat-box">
+                        <label>MANVR</label>
+                        <input type="number" name="system.stats.maneuver" value="{{system.stats.maneuver}}"/>
+                    </div>
+                </div>
+                <div style="font-size:0.65em; color:#887733; text-align:center; margin-top:3px;">Effective SR: {{effectiveSR}} (after shield damage)</div>
+            </div>
+
+            <div class="station-panel" style="border:1px solid #333; background:#1a1a1a; padding:5px; border-radius:5px; flex:1;">
+                <div style="background:#222; color:#888; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">System Status <span style="font-size:0.7em; font-weight:normal; color:#555;">(click to cycle)</span></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px; font-size:0.7em; margin-bottom:6px;">
+                    {{#each system.subsystems as |val key|}}
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e2025; padding:2px 3px;">
+                        <span style="text-transform:uppercase; color:#888; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">{{lookup ../config.shipSystemLabels key}}</span>
+                        <a data-action="systemStatusToggle" data-system="{{key}}" style="font-weight:bold; cursor:pointer; font-family:'Share Tech Mono',monospace; color:{{lookup ../config.systemStatusColors val}};">
+                            {{lookup ../config.systemStatusLabels val}}
+                        </a>
+                    </div>
+                    {{/each}}
+                </div>
+                <button type="button" data-action="rollIncomingHit" style="width:100%; font-size:0.7em; background:#cc2200; color:#fff; border:none; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px; margin-bottom:3px;">INCOMING HIT (GM)</button>
+                <button type="button" data-action="rollCasualties" style="width:100%; font-size:0.65em; background:#222; color:#888; border:1px solid #333; padding:3px; border-radius:4px; cursor:pointer;">Roll Casualties</button>
+            </div>
+
+        </div>
+
+        <!-- ═══ COL 2: NAVIGATION + ENGINEERING ═══ -->
+        <div style="display:flex; flex-direction:column; gap:8px;">
+
+            <div class="station-panel" style="border:1px solid #cc0000; background:#220000; padding:5px; border-radius:5px;">
+                <div style="background:#cc0000; color:#fff; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Navigation &mdash; Torps &amp; Shields</div>
+                <div class="station-drop-zone" data-role="navigation" style="border:1px dashed #550000; padding:4px; margin-bottom:4px; text-align:center; min-height:32px; display:flex; align-items:center; justify-content:center;">
+                    {{#if crewData.navigation}}
+                    <div style="display:flex; align-items:center; gap:6px; width:100%; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+                        <img src="{{crewData.navigation.img}}" style="width:24px; height:24px; border-radius:3px; border:1px solid #777;"/>
+                        <span style="font-weight:bold; color:#fff; font-size:0.9em; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{crewData.navigation.name}}</span>
+                        <a data-action="crewRemove" data-role="navigation" style="color:#888; cursor:pointer; padding:0 3px;">&times;</a>
+                    </div>
+                    {{else}}
+                    <span style="font-size:0.65em; color:#550000;">[ DRAG NAVIGATOR HERE ]</span>
+                    {{/if}}
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-bottom:4px;">
+                    <button type="button" data-action="rollShipFire" data-weapon-type="torps" style="background:#aa0000; color:#fff; border:none; font-size:0.75em; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">FIRE TORPS</button>
+                    <button type="button" data-action="toggleShields" style="{{#if system.health.shields.active}}background:#004466; color:#6cf; border:1px solid #0066aa;{{else}}background:#222; color:#555; border:1px solid #333;{{/if}} font-size:0.75em; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">
+                        {{#if system.health.shields.active}}SHIELDS UP{{else}}SHIELDS DOWN{{/if}}
+                    </button>
+                </div>
+
+                <div style="margin-bottom:4px;">
+                    <div style="height:8px; background:#1a0000; border:1px solid #330000; border-radius:3px; overflow:hidden; margin-bottom:2px;">
+                        <div style="height:100%; width:{{shieldPct}}%; background:{{#if system.health.shields.active}}linear-gradient(to right,#004466,#0088cc){{else}}#333{{/if}}; transition:width 0.5s;"></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75em; color:#6cf;">
+                        <span>SHIELDS</span>
+                        {{#if system.health.shields.active}}
+                        <span>
+                            <input type="number" name="system.health.shields.value" value="{{system.health.shields.value}}" class="ship-inline-value" style="width:28px; font-size:0.9em;"/>
+                            / {{system.health.shields.max}}%
+                        </span>
+                        {{else}}
+                        <span style="color:#cc2200; font-family:'Corporate',sans-serif; letter-spacing:2px; font-weight:bold;">OFFLINE</span>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:4px;">
+                    <div class="stat-box">
+                        <label>TORP WR</label>
+                        <input type="number" name="system.stats.torpedo_damage" value="{{system.stats.torpedo_damage}}"/>
+                    </div>
+                    <div class="stat-box">
+                        <label>AMMO</label>
+                        <div style="display:flex; align-items:center; justify-content:center; gap:1px;">
+                            <input type="number" name="system.ammo.torpedoes.value" value="{{system.ammo.torpedoes.value}}" class="ship-inline-value" style="width:24px; font-weight:bold;"/>
+                            <span style="color:#555;">/</span>
+                            <input type="number" name="system.ammo.torpedoes.max" value="{{system.ammo.torpedoes.max}}" class="ship-inline-value dim" style="width:24px;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="station-panel" style="border:1px solid #004466; background:#001122; padding:5px; border-radius:5px; flex:1;">
+                <div style="background:#0088cc; color:#fff; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Engineering &mdash; Damage Control</div>
+                <div class="station-drop-zone" data-role="engineering" style="border:1px dashed #002233; padding:4px; margin-bottom:4px; text-align:center; min-height:32px; display:flex; align-items:center; justify-content:center;">
+                    {{#if crewData.engineering}}
+                    <div style="display:flex; align-items:center; gap:6px; width:100%; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+                        <img src="{{crewData.engineering.img}}" style="width:24px; height:24px; border-radius:3px; border:1px solid #777;"/>
+                        <span style="font-weight:bold; color:#fff; font-size:0.9em; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{crewData.engineering.name}}</span>
+                        <a data-action="crewRemove" data-role="engineering" style="color:#888; cursor:pointer; padding:0 3px;">&times;</a>
+                    </div>
+                    {{else}}
+                    <span style="font-size:0.65em; color:#002233;">[ DRAG ENGINEER HERE ]</span>
+                    {{/if}}
+                </div>
+                <div style="display:flex; gap:4px; margin-bottom:4px;">
+                    <button type="button" data-action="rollDamageControl" data-type="route" style="flex:1; background:#006699; color:#fff; border:none; font-size:0.7em; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">ROUTE ENERGY</button>
+                    <button type="button" data-action="rollDamageControl" data-type="repair" style="flex:1; background:#222; color:#aaa; border:1px solid #444; font-size:0.7em; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">JURY RIG</button>
+                </div>
+                <button type="button" data-action="rollWorriedEngineer" style="width:100%; margin-bottom:4px; font-size:0.7em; background:#330033; color:#cc99ff; border:none; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px;">WORRIED ENGINEER (FATE REROLL)</button>
+                <div class="stat-box" style="margin-top:2px;">
+                    <label>ENG RATING</label>
+                    <input type="number" name="system.stats.engineering" value="{{system.stats.engineering}}"/>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ═══ COL 3: SCIENCE + HELM SKILL + NOTES ═══ -->
+        <div style="display:flex; flex-direction:column; gap:8px;">
+
+            <div class="station-panel" style="border:1px solid #005577; background:#001a2a; padding:5px; border-radius:5px;">
+                <div style="background:#005577; color:#6cf; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Science &mdash; Sensors &amp; Analysis</div>
+                <div class="station-drop-zone" data-role="science" style="border:1px dashed #002233; padding:4px; margin-bottom:4px; text-align:center; min-height:32px; display:flex; align-items:center; justify-content:center;">
+                    {{#if crewData.science}}
+                    <div style="display:flex; align-items:center; gap:6px; width:100%; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+                        <img src="{{crewData.science.img}}" style="width:24px; height:24px; border-radius:3px; border:1px solid #777;"/>
+                        <span style="font-weight:bold; color:#fff; font-size:0.9em; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{crewData.science.name}}</span>
+                        <a data-action="crewRemove" data-role="science" style="color:#888; cursor:pointer; padding:0 3px;">&times;</a>
+                    </div>
+                    {{else}}
+                    <span style="font-size:0.65em; color:#002233;">[ DRAG SCIENCE OFFICER HERE ]</span>
+                    {{/if}}
+                </div>
+                <button type="button" data-action="rollSensorScan" style="width:100%; background:#005577; color:#6cf; border:none; font-size:0.75em; padding:5px; border-radius:4px; cursor:pointer; font-family:'Final Frontier',sans-serif; letter-spacing:1px; margin-bottom:4px;">SENSOR SCAN</button>
+                <div class="stat-box">
+                    <label>SENSOR RATING</label>
+                    <input type="number" name="system.stats.sensors" value="{{system.stats.sensors}}"/>
+                </div>
+            </div>
+
+            <div class="station-panel" style="border:1px solid #333; background:#1a1a1a; padding:5px; border-radius:5px;">
+                <div style="background:#333; color:#aaa; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Helm Skill</div>
+                <div class="stat-box">
+                    <label>HELM BONUS (evasion rolls)</label>
+                    <input type="number" name="system.stats.helm" value="{{system.stats.helm}}" title="Helm officer skill bonus used in evasion and maneuver rolls"/>
+                </div>
+            </div>
+
+            <div class="station-panel" style="border:1px solid #222; background:#111; padding:5px; border-radius:5px; flex:1;">
+                <div style="background:#1a1a1a; color:#666; padding:2px 5px; font-weight:bold; font-size:0.75em; margin-bottom:4px; text-transform:uppercase;">Ship Notes / Quirks</div>
+                <textarea name="system.stats.notes" placeholder="Class, quirks, special rules, crew manifest..." style="width:100%; height:calc(100% - 24px); min-height:80px; background:rgba(0,0,0,0.3); color:#aaa; border:1px solid #222; border-radius:3px; font-family:'Corporate',sans-serif; font-size:0.8em; padding:5px; resize:none; box-sizing:border-box;">{{system.stats.notes}}</textarea>
+            </div>
+
+        </div>
+    </div><!-- /3-col grid -->
+</div>

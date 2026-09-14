@@ -1,0 +1,28 @@
+<header class="sheet-header">
+    <img class="profile-img {{borderClass}}" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}"/>
+
+    <div class="header-fields">
+        <h1 class="charname">
+            <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+        </h1>
+
+        <div class="grid-4col">
+            <div class="resource">
+                <label>CLASS</label>
+                <input type="text" name="system.details.class" value="{{system.details.class}}"/>
+            </div>
+            <div class="resource">
+                <label>RACE</label>
+                <input type="text" name="system.details.race" value="{{system.details.race}}"/>
+            </div>
+            <div class="resource">
+                <label>RANK</label>
+                <input type="text" name="system.details.rank" value="{{system.details.rank}}"/>
+            </div>
+            <div class="resource">
+                <label>XP</label>
+                <input type="number" name="system.details.xp" value="{{system.details.xp}}"/>
+            </div>
+        </div>
+    </div>
+</header>
